@@ -80,6 +80,8 @@ void print_sieve_of_Eratosthenes(char* path, unsigned int N){
 void check_input_num_and_print_sieve(char* path, int N){
 	if (N > MAX_INPUT){
 		fprintf(stderr, "Given number (%i) exceeded max input %i.", N, MAX_INPUT);
+	}else if (N < 2){
+		fprintf(stderr, "Given number (%i) is not a valid number", N);
 	}else{
 		print_sieve_of_Eratosthenes(path, N);
 	}
