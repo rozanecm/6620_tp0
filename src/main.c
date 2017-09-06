@@ -71,6 +71,7 @@ void print_sieve_of_Eratosthenes(char* path, unsigned int N){
         for (int i = 0; i < pi_of_N; ++i){
             fprintf(file, "%i\n", erat[i]);
         }
+		fclose(file);
 	}
 
 	/* free resources */
