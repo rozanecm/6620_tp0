@@ -56,7 +56,8 @@ void print_sieve_of_Eratosthenes(char* path, unsigned int N){
 	}else{
 		FILE* file = fopen(path, "w");
         for (int i = 2; i <= N; ++i){
-            fprintf(file, "%i\n", all_nums[i]);
+        	if(all_nums[i]!=0)
+            	fprintf(file, "%i\n", all_nums[i]);
         }
 		fclose(file);
 	}
@@ -76,7 +77,7 @@ void check_input_num_and_print_sieve(char* path, int N){
 int main(int argc, char* argv[]){
 	static struct option long_options[] = {
 		{"help", 	no_argument, 		0, 'h' },
-		{"version",	no_argument, 		0, 'V' },
+		{"version",	no_argument, 		0, 'v' },
 		{"output",	required_argument,	0, 'o' },
 		{0,			0,					0,  0  }
 	};
@@ -93,7 +94,7 @@ int main(int argc, char* argv[]){
 			check_input_num_and_print_sieve(optarg, atoi(argv[argc-1]));
 			break;
 		default:
-			printf("?? getopt returned character code 0%o ??\n", c);
+			printf("Invalid option, run ./erat -h for help\n");
 	}
 	return 0;
 }
