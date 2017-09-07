@@ -17,72 +17,57 @@ void print_version_info(){
 	printf("Version 1.0\n");
 }
 
-int* calculate_eratosthenes(unsigned int N, unsigned int *pi_of_N){
-	int all_nums [N+1];
-	for (int i = 0; i <= N; ++i){
-		all_nums[i] = i;
-	}
+void erat(unsigned int * numeros,unsigned int N){
 
-    /* initialize number of primes in given range. */
-	unsigned int primes_counter = N - 1;
-
-	for (int i = 2; i < (int) sqrt(N); ++i){
-		for (int j = i+1; j <= N; ++j){
-			if (j % i == 0 && all_nums[j] != 0){
-                primes_counter--;
-                all_nums[j] = 0;
-			}
+	int i = 2;
+	int j = 2;
+	
+	while(pow(i,2)<N){
+		while(i*j <= N){
+			numeros[i*j] = 0;
+			j++;
 		}
+		i++;
+		j = 2;
 	}
-
-    *pi_of_N = primes_counter;
-
-	int* primes;
-	primes = malloc(primes_counter * sizeof(int));
-
-	primes_counter = 0;
-
-	for (int i = 2; i <= N; ++i){
-		if (all_nums [i] != 0){
-			primes[primes_counter] = i;
-			primes_counter++;
-		}
-	}
-
-	return primes;
+	
 }
+
+
 
 void print_sieve_of_Eratosthenes(char* path, unsigned int N){
     /* pi(N): In mathematics, the prime-counting function is the function
      * counting the number of prime numbers less than or equal to some real
      * number x. It is denoted by π(x) (unrelated to the number π).
      * Source: https://en.wikipedia.org/wiki/Prime-counting_function */
-    unsigned int pi_of_N;
-	int* erat = calculate_eratosthenes(N, &pi_of_N);
+    unsigned int all_nums [N+1];
+	for (int i = 0; i <= N; ++i){
+		all_nums[i] = i;
+	}
+	erat(all_nums, N);
 
 	/* check where to print results */
 	if (*path == 45){
 		// output to stdout
-        for (int i = 0; i < pi_of_N; ++i){
-            printf("%i\n", erat[i]);
+        for (int i = 2; i <= N; ++i){
+        	if(all_nums[i]!=0)
+           		printf("%i\n", all_nums[i]);
         }
 	}else{
 		FILE* file = fopen(path, "w");
-        for (int i = 0; i < pi_of_N; ++i){
-            fprintf(file, "%i\n", erat[i]);
+        for (int i = 2; i <= N; ++i){
+            fprintf(file, "%i\n", all_nums[i]);
         }
 		fclose(file);
 	}
 
-	/* free resources */
-	free(erat);
 }
 
 void check_input_num_and_print_sieve(char* path, int N){
 	if (N > MAX_INPUT){
-		fprintf(stderr, "Given number (%i) exceeded max input %i.", N, MAX_INPUT);
+		fprintf(stderr, "Given number (%i) exceeded max input %i.\n", N, MAX_INPUT);
 	}else if (N < 2){
-		fprintf(stderr, "Given number (%i) is not a valid number", N);
+		fprintf(stderr, "Given number (%i) is not a valid number\n", N);
 	}else{
 		print_sieve_of_Eratosthenes(path, N);
 	}
